@@ -86,8 +86,8 @@ services:
 
   chromadb:
     image: docker.io/chromadb/chroma:latest
-    ports:
-      - "${CHROMADB_BIND:-127.0.0.1}:8100:8000"
+    expose:
+      - 8000
     volumes:
       - chromadb-data:/chroma/chroma
     environment:
@@ -114,8 +114,8 @@ services:
           sed "s|__SEARXNG_SECRET__|$$secret|g" /tmp/searxng-settings.yml.template > /etc/searxng/settings.yml
         fi
         exec /usr/local/searxng/entrypoint.sh
-    ports:
-      - "127.0.0.1:8080:8080"
+    expose:
+      - 8080
     volumes:
       - searxng-data:/etc/searxng
       - ./config/searxng/settings.yml:/tmp/searxng-settings.yml.template:ro,z
@@ -147,8 +147,8 @@ services:
   ntfy:
     image: docker.io/binwiederhier/ntfy
     command: serve
-    ports:
-      - "${NTFY_BIND:-127.0.0.1}:8091:80"
+    expose:
+      - 80
     volumes:
       - ntfy-cache:/var/cache/ntfy
     environment:
